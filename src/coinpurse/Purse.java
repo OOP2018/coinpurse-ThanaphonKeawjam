@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
  
-// You will use Collections.sort() to sort the coins
-
 /**
  *  A coin purse contains coins.
  *  You can insert coins, withdraw money, check the balance,
@@ -79,7 +77,6 @@ public class Purse {
      * @return true if coin inserted, false if can't insert
      */
     public boolean insert( Coin coin ) {
-        // if the purse is already full then can't insert anything.
     	boolean ok = isFull();
     	if(ok || coin.getValue() <= 0){
     		return false;
@@ -98,27 +95,6 @@ public class Purse {
 	 *    or null if cannot withdraw requested amount.
      */
     public Coin[] withdraw( double amount ) {
-        
-	   /*
-		* See lab sheet for outline of a solution, 
-		* or devise your own solution.
-		* The idea is to be greedy.
-		* Try to withdraw the largest coins possible.
-		* Each time you choose a coin as a candidate for
-		* withdraw, add it to a temporary list and
-		* decrease the amount (remainder) to withdraw.
-		* 
-		* If you reach a point where amountNeededToWithdraw == 0
-		* then you found a solution!
-		* Now, use the temporary list to remove coins
-		* from the money list, and return the temporary
-		* list (as an array).
-		*/
-		
-		// Did we get the full amount?
-		// This code assumes you decrease amount each time you remove a coin.
-    	// Your code might use some other variable for the remaining amount to withdraw.
-    	
     	List<Coin> list = new ArrayList<>();
     	double amountNeededToWithdraw = amount;
     	Collections.sort(money);
@@ -134,7 +110,6 @@ public class Purse {
     	
 		if ( amountNeededToWithdraw != 0 )
 		{	
-			// failed. Don't change the contents of the purse.
 			return null;
 		}
 		
@@ -144,12 +119,7 @@ public class Purse {
 		
 		Coin[] withdraw = new Coin[list.size()];
 
-		// Success.
-		// Remove the coins you want to withdraw from purse,
-		// and return them as an array.
-		// Use list.toArray( array[] ) to copy a list into an array.
-		// toArray returns a reference to the array itself.
-        return list.toArray(withdraw); //TODO replace this with real code
+        return list.toArray(withdraw);
 	}
   
     /** 
