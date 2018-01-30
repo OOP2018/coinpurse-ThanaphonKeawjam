@@ -1,6 +1,7 @@
 package coinpurse;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -12,52 +13,35 @@ import java.util.List;
  */
 public class MoneyUtil {
 
+	/**
+	 * add value and currency to value list.
+	 */
 	public static void sortCoins(){
-		List<Coin> coins = new ArrayList<Coin>();
-		//add for test compareTo method.
+		List<Valuable> coins = new ArrayList<Valuable>();
 		coins.add(new Coin(10.0, "Baht"));
 		coins.add(new Coin(5.0, "Baht"));
 		coins.add(new Coin(5.0, "Baht"));
 		coins.add(new Coin(0.5, "Baht"));
-		
-		//add for test compareTo method(different currency but same value case).
 		coins.add(new Coin(20.0, "USD"));
 		coins.add(new Coin(20.0, "Peso"));
-		
-		//add for test filterByCurrency method.
 		coins.add(new Coin(1000.0, "USD"));
 		coins.add(new Coin(100.0, "USD"));
+		coins.add(new Coin(100.0, "Yen"));
+		coins.add(new Coin(100.0, "Peso"));
+		coins.add(new Coin(50.0, "Yen"));
 		
-		System.out.println("======== Test compareTo ========");
-		System.out.println(coins.get(0).compareTo(coins.get(1)));
-		System.out.println(coins.get(3).compareTo(coins.get(1)));
-		System.out.println(coins.get(1).compareTo(coins.get(2)));
-		System.out.println();
-		
-		System.out.println("======== Different currency ========");
-		System.out.println(coins.get(4).compareTo(coins.get(5)));
-		System.out.println();
-		
-		System.out.println("======== Before sort ========");
 		printCoins(coins);
-		java.util.Collections.sort(coins);
-		System.out.println();
-		
-		System.out.println("======== After sort =========");
-		printCoins(coins);
-		System.out.println();
-		
-		System.out.println("======== Same currency ========");
-		List<Coin> filter = new ArrayList<>();
-		filter = filterByCurrency(coins, "USD");
-		printCoins(filter);
+		System.out.println("==========");
+		sortCoins(coins);
+		System.out.println("=========");
+		System.out.println(filterByCurrency(coins, "USD"));
 	}
 	
 	/**
-	 * Print list of coins.
-	 * @param coins is list of coins.
+	 * Print list of value.
+	 * @param coins is list of value.
 	 */
-	public static void printCoins(List<Coin> coins){
+	public static void printCoins(List<Valuable> coins){
 		for(int i = 0; i < coins.size(); i++){
 			System.out.println(coins.get(i));
 		}
@@ -65,26 +49,27 @@ public class MoneyUtil {
 	
 	/**
 	 * Return a list of coins that cotains only the coins from coins(the parameter).
-	 * @param coins is list of coins.
-	 * @param currency is coin's currency.
-	 * @return list of coins that have same currency.
+	 * @param money is list of value.
+	 * @param currency is value's currency.
+	 * @return list of value that have same currency.
 	 */
-	public static List<Coin> filterByCurrency(List<Coin> coins, String currency){
-		List<Coin> coinFilter = new ArrayList<>();
-		for(int i = 0; i < coins.size(); i++){
-			if(coins.get(i).getCurrency().equals(currency)){
-				coinFilter.add(coins.get(i));
+	public static List<Valuable> filterByCurrency(List<Valuable> money, String currency){
+		List<Valuable> coinFilter = new ArrayList<>();
+		for(int i = 0; i < money.size(); i++){
+			if(money.get(i).getCurrency().equals(currency)){
+				coinFilter.add(money.get(i));
 			}
 		}
 		return coinFilter;
 	}
 	
 	/**
-	 * Sort a list of coins and print the result.
-	 * @param coins is list of coins.
+	 * Sort a list of value and print the result.
+	 * @param coins is list of value.
 	 */
-	public static void sortCoins(List<Coin> coins){
-		java.util.Collections.sort(coins);
+	public static void sortCoins(List<Valuable> coins){
+		Comparator<Valuable> comp = new ValueComparator();
+		java.util.Collections.sort(coins, comp);
 		printCoins(coins);
 	}
 	

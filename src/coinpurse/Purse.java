@@ -1,6 +1,7 @@
 package coinpurse;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Collections;
  
@@ -13,8 +14,9 @@ import java.util.Collections;
  */
 public class Purse {
     /** Collection of objects in the purse. */
-	private List<Coin> money = new ArrayList<Coin>();
-    
+	//private List<Coin> money = new ArrayList<Coin>();
+	private List<Valuable> money;
+	
     /** Capacity is maximum number of items the purse can hold.
      *  Capacity is set when the purse is created and cannot be changed.
      */
@@ -26,6 +28,7 @@ public class Purse {
      */
     public Purse( int capacity ) {
     	this.capacity = capacity;
+    	money = new ArrayList<>();
     }
     
     /**
@@ -76,7 +79,7 @@ public class Purse {
      * @param coin is a Coin object to insert into purse
      * @return true if coin inserted, false if can't insert
      */
-    public boolean insert( Coin coin ) {
+    public boolean insert( Valuable coin ) {
     	boolean ok = isFull();
     	if(ok || coin.getValue() <= 0){
     		return false;
@@ -94,10 +97,11 @@ public class Purse {
      *  @return array of Coin objects for money withdrawn, 
 	 *    or null if cannot withdraw requested amount.
      */
-    public Coin[] withdraw( double amount ) {
-    	List<Coin> list = new ArrayList<>();
+    public Valuable[] withdraw( double amount ) {
+    	Comparator<Valuable> comp = new ValueComparator();
+    	List<Valuable> list = new ArrayList<>();
     	double amountNeededToWithdraw = amount;
-    	Collections.sort(money);
+    	Collections.sort(money, comp);
     	Collections.reverse(money);
     	if(amountNeededToWithdraw <= 0 || getBalance() < amountNeededToWithdraw || money.size() == 0) return null;
     	for(int i = 0; i < money.size(); i++){
@@ -113,11 +117,11 @@ public class Purse {
 			return null;
 		}
 		
-		for(Coin removeCoin : list){
+		for(Valuable removeCoin : list){
 			money.remove(removeCoin);
 		}
 		
-		Coin[] withdraw = new Coin[list.size()];
+		Valuable[] withdraw = new Valuable[list.size()];
 
         return list.toArray(withdraw);
 	}
