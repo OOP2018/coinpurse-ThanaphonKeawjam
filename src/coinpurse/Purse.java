@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.Collections;
  
 /**
- *  A coin purse contains coins.
- *  You can insert coins, withdraw money, check the balance,
+ *  A valuable purse contains money.
+ *  You can insert money, withdraw money, check the balance,
  *  and check if the purse is full.
  *  
  *  @author Thanaphon Keawjam
  */
 public class Purse {
     /** Collection of objects in the purse. */
-	//private List<Coin> money = new ArrayList<Coin>();
 	private List<Valuable> money;
 	
     /** Capacity is maximum number of items the purse can hold.
@@ -22,19 +21,22 @@ public class Purse {
      */
     private final int capacity;
     
+    private Comparator<Valuable> comp;
+    
     /** 
      *  Create a purse with a specified capacity.
-     *  @param capacity is maximum number of coins you can put in purse.
+     *  @param capacity is maximum number of money you can put in purse.
      */
     public Purse( int capacity ) {
     	this.capacity = capacity;
     	money = new ArrayList<>();
+    	comp = new ValueComparator();
     }
     
     /**
-     * Count and return the number of coins in the purse.
-     * This is the number of coins, not their value.
-     * @return the number of coins in the purse
+     * Count and return the number of money in the purse.
+     * This is the number of money, not their value.
+     * @return the number of money in the purse
      */
     public int count() { return money.size(); }
     
@@ -51,7 +53,7 @@ public class Purse {
 	}
     
     /**
-     * Return the capacity of the coin purse.
+     * Return the capacity of the valuable purse.
      * @return the capacity
      */
     public int getCapacity() { 
@@ -73,32 +75,31 @@ public class Purse {
     }
 
     /** 
-     * Insert a coin into the purse.
-     * The coin is only inserted if the purse has space for it
-     * and the coin has positive value.  No worthless coins!
-     * @param coin is a Coin object to insert into purse
-     * @return true if coin inserted, false if can't insert
+     * Insert a money into the purse.
+     * The money is only inserted if the purse has space for it
+     * and the money has positive value.  No worthless money!
+     * @param insertValue is a Valuable object to insert into purse
+     * @return true if money inserted, false if can't insert
      */
-    public boolean insert( Valuable coin ) {
+    public boolean insert( Valuable insertValue ) {
     	boolean ok = isFull();
-    	if(ok || coin.getValue() <= 0){
+    	if(ok || insertValue.getValue() <= 0){
     		return false;
     	}else{
-    		money.add(coin);
+    		money.add(insertValue);
     		return true;
     	}
     }
     
     /**  
      *  Withdraw the requested amount of money.
-     *  Return an array of Coins withdrawn from purse,
+     *  Return an array of Valuable withdrawn from purse,
      *  or return null if cannot withdraw the amount requested.
      *  @param amount is the amount to withdraw
-     *  @return array of Coin objects for money withdrawn, 
+     *  @return array of Valuable objects for money withdrawn, 
 	 *    or null if cannot withdraw requested amount.
      */
     public Valuable[] withdraw( double amount ) {
-    	Comparator<Valuable> comp = new ValueComparator();
     	List<Valuable> list = new ArrayList<>();
     	double amountNeededToWithdraw = amount;
     	Collections.sort(money, comp);
@@ -131,7 +132,7 @@ public class Purse {
      * It can return whatever is a useful description.
      */
     public String toString() {
-    	return String.format("%d Coins with value %.2f", money.size(),getBalance());
+    	return String.format("Amount of money %d with value %.2f", money.size(),getBalance());
     }
 
 }

@@ -6,8 +6,8 @@ import java.util.List;
 
 /**
  * MoneyUtil use to demonstrate compareTo() method,
- * print list of coins before and after sort the coins,
- * and print list of coins by filter currency.
+ * print list of Valuable before and after sort the money,
+ * and print list of Valuable by filter currency.
  * @author Thanaphon Keawjam
  *
  */
@@ -48,7 +48,7 @@ public class MoneyUtil {
 	}
 	
 	/**
-	 * Return a list of coins that cotains only the coins from coins(the parameter).
+	 * Return a list of Valuable that cotains only the coins from coins(the parameter).
 	 * @param money is list of value.
 	 * @param currency is value's currency.
 	 * @return list of value that have same currency.

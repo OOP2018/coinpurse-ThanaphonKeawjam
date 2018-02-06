@@ -124,8 +124,9 @@ public class ConsoleDialog {
     }
     
     /** Make a Coin (or BankNote or whatever) using requested value. */
-    private Coin makeMoney(double value) {
-    	return new Coin(value, CURRENCY);
+    private Valuable makeMoney(double value) {
+    	if(value > 20) return new BankNote(value, CURRENCY);
+    	else return new Coin(value, CURRENCY);
     }
 
 }
