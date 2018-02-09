@@ -203,14 +203,14 @@ public class PurseTest {
 	}
 	
 	/**
-	 * Sum the value of some coins.
-	 * @param coins array of coins
-	 * @return sum of values of the coins
+	 * Sum the value of some valuable.
+	 * @param values array of valuable
+	 * @return sum of values of the value
 	 */
-	private double sum(Valuable[] coins)  {
-		if (coins == null) return 0.0;
+	private double sum(Valuable[] values)  {
+		if (values == null) return 0.0;
 		double sum = 0;
-		for(Valuable c: coins) if (c != null) sum += c.getValue();
+		for(Valuable c: values) if (c != null) sum += c.getValue();
 		return sum;
 	}
 }
