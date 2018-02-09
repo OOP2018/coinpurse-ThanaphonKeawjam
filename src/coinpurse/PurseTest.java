@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.List;
 
+import jdk.internal.org.objectweb.asm.tree.analysis.Value;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +25,7 @@ import org.junit.Test;
 public class PurseTest {
 	/** tolerance for comparing two double values */
 	private static final double TOL = 1.0E-6;
-	private static final String CURRENCY = "BTC";
+	private static final String CURRENCY = "Baht";
 	
     /**
      * Sets up the test fixture.
@@ -202,6 +204,43 @@ public class PurseTest {
 		assertNull( purse.withdraw(30) );
 	}
 	
+	@Test(timeout=1000)
+	public void testValuableWithdraw(){
+		Purse purse = new Purse(6);
+	    purse.insert(new Money(20.0, "Baht"));
+	    purse.insert(new Money(40.0, "Baht"));
+	    purse.insert(new Money(40.0, "Baht"));
+	    purse.insert(new Money(30.0, "Yen"));
+	    purse.insert(new Money(50.0, "Baht"));
+	    purse.withdraw(new Money(50.0,"Yen"));
+	    assertEquals(180.0, purse.getBalance(), TOL);
+	    purse.withdraw(new Money(90.0,"Baht"));
+	    assertEquals(90.0, purse.getBalance(), TOL); 
+	}
+
+	
+	@Test(timeout=1000)
+	public void testEquals(){
+		Valuable v1 = new Coin(10.0, "Baht");
+		Valuable v2 = new Coin(10.0, "Baht");
+		Valuable v3 = new Coin(20.0, "Baht");
+		Valuable v4 = new Coin(10.0, "USD");
+		Valuable v5 = new Coin(5.0, "USD");
+		
+		Valuable v6 = new BankNote(100.0, "Yen");
+		Valuable v7 = new BankNote(100.0, "Yen");
+		Valuable v8 = new BankNote(200.0, "Yuan");
+		Valuable v9 = new BankNote(100.0, "Yuan");
+		
+		assertTrue(v1.equals(v2));
+		assertFalse(v1.equals(v3));
+		assertFalse(v4.equals(v5));
+		assertFalse(v3.equals(v4));
+		assertTrue(v6.equals(v7));
+		assertFalse(v6.equals(v8));
+		assertFalse(v8.equals(v9));
+	}
+		
 	/**
 	 * Sum the value of some valuable.
 	 * @param values array of valuable
