@@ -110,26 +110,38 @@ public class Purse {
 	 *    	   or null if cannot withdraw requested amount.
      */
     public Valuable[] withdraw(Valuable amount){
+    	if(amount == null && amount.getValue() < 0) return null;
+    	
     	List<Valuable> list = new ArrayList<Valuable>();
+    	
     	Collections.sort(money, comp);
     	Collections.reverse(money);
+    	
     	double amountNeededToWithdraw = amount.getValue();
-    	if(amountNeededToWithdraw < 0 || this.getBalance() < amountNeededToWithdraw || money.size() == 0) return null;
+    	
+    	if(amountNeededToWithdraw < 0 || this.getBalance() < amountNeededToWithdraw || count() == 0) return null;
+    	
     	for(Valuable value : money){
+    		
     		if(value.getCurrency().equalsIgnoreCase(amount.getCurrency())){
+    			
     			if(amountNeededToWithdraw >= value.getValue()){
     				amountNeededToWithdraw -= value.getValue();
     				list.add(value);
     			}
     		}
+    		
     		if(amountNeededToWithdraw == 0) break;
     	}
     	
     	if(amountNeededToWithdraw != 0) return null;
+    	
     	for(Valuable removeValue : list) money.remove(removeValue);
+    	
     	Valuable[] withdraw = new Valuable[list.size()];
+    	
     	return list.toArray(withdraw);
-    }  
+     }  
     
     /** 
      * toString returns a string description of the purse contents.
