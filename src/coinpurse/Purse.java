@@ -113,18 +113,15 @@ public class Purse {
     	if(amount == null && amount.getValue() < 0) return null;
     	
     	List<Valuable> list = new ArrayList<Valuable>();
-    	
+    	double amountNeededToWithdraw = amount.getValue();
+  
     	Collections.sort(money, comp);
     	Collections.reverse(money);
     	
-    	double amountNeededToWithdraw = amount.getValue();
-    	
     	if(amountNeededToWithdraw < 0 || this.getBalance() < amountNeededToWithdraw || count() == 0) return null;
     	
-    	for(Valuable value : money){
-    		
-    		if(value.getCurrency().equalsIgnoreCase(amount.getCurrency())){
-    			
+    	for(Valuable value : money){	
+    		if(value.getCurrency().equalsIgnoreCase(amount.getCurrency())){	
     			if(amountNeededToWithdraw >= value.getValue()){
     				amountNeededToWithdraw -= value.getValue();
     				list.add(value);
