@@ -110,7 +110,7 @@ public class Purse {
 	 *    	   or null if cannot withdraw requested amount.
      */
     public Valuable[] withdraw(Valuable amount){
-    	if(amount == null && amount.getValue() < 0) return null;
+    	if(amount == null || amount.getValue() < 0) return null;
     	
     	List<Valuable> list = new ArrayList<Valuable>();
     	double amountNeededToWithdraw = amount.getValue();
