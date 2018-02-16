@@ -10,13 +10,15 @@ import java.util.Scanner;
  */
 public class ConsoleDialog {
 	// default currency for this dialog
-	public static final String CURRENCY = "Baht";
+	public static String CURRENCY = "Baht";
     // use a single java.util.Scanner object for reading all input
     private static Scanner console = new Scanner( System.in );
     // Long prompt shown the first time
     final String FULL_PROMPT = "\nEnter d (deposit), w (withdraw), ? (inquiry), or q (quit): ";
     // Shorter prompt shown subsequently
     final String SHORT_PROMPT = "\nEnter d, w, ?, or q: ";
+    
+    private MoneyFactory moneyFactory = MoneyFactory.getInstance();
     
 	// The dialog receives a Purse object by dependency injection (as parameter to constructor)
     // so don't create a Purse here.
@@ -34,6 +36,7 @@ public class ConsoleDialog {
     public void run() {
         String choice = "";
         String prompt = FULL_PROMPT;
+        if(moneyFactory.getClass().getName().contains("Malay")) CURRENCY = "Ringgit";
         loop: while( true ) {
             System.out.printf("Purse contains %.2f %s\n", purse.getBalance(), CURRENCY );
             if ( purse.isFull() ) System.out.println("Purse is FULL.");
@@ -83,6 +86,7 @@ public class ConsoleDialog {
         while( scanline.hasNextDouble() ) {
             double value = scanline.nextDouble();
             Valuable coin = makeMoney(value);
+            if(coin == null) continue;
             System.out.printf("Deposit %s... ", coin.toString() );
             boolean ok = purse.insert(coin);
             System.out.println( (ok? "ok" : "FAILED") );
@@ -125,8 +129,13 @@ public class ConsoleDialog {
     
     /** Make a Coin (or BankNote or whatever) using requested value. */
     private Valuable makeMoney(double value) {
-    	if(value > 20) return new BankNote(value, CURRENCY);
-    	else return new Coin(value, CURRENCY);
-    }
+    	Valuable values = null;
+    	try{
+    		values = moneyFactory.creatMoney(value);
+    	}catch(IllegalArgumentException ex){
+    		System.out.println("Sorry, " + value + " is not a valid amount.");
+    	}
+    	return values;
+    } 
 
 }

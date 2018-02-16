@@ -31,8 +31,8 @@ public class MoneyUtil {
 		coins.add(new Coin(50.0, "Yen"));
 		coins.add(new Coin(50.0, "Yuan"));
 		coins.add(new Coin(120.0, "Yuan"));
-		coins.add(new BankNote(200.0, "Yen"));
-		coins.add(new BankNote(500.0, "Yen"));
+		coins.add(new BankNote(200.0, "Yen", 1000000));
+		coins.add(new BankNote(500.0, "Yen", 1000001));
 		
 		printCoins(coins);
 		System.out.println("==========");

@@ -100,7 +100,11 @@ public class Purse {
 	 *    or null if cannot withdraw requested amount.
      */
     public Valuable[] withdraw( double amount ) {
-    	return withdraw(new Money(amount, "Baht"));
+    	String currency;
+    	MoneyFactory factory = MoneyFactory.getInstance();
+    	if(factory.getClass().getName().contains("Thai")) currency = "Baht";
+    	else currency = "Ringgit";
+    	return withdraw(new Money(amount, currency));
 	}
     
     /**
