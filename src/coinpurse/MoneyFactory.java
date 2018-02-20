@@ -25,21 +25,21 @@ public abstract class MoneyFactory {
 	 * @param value is value of money.
 	 * @return object of valuable.
 	 */
-	public abstract Valuable creatMoney(double value);
+	public abstract Valuable createMoney(double value);
 	
 	/**
 	 * Accepts money value as a String
 	 * @param value is value of money.
 	 * @return value from creatMoney(double) method.
 	 */
-	public Valuable creatMoney(String value){
+	public Valuable createMoney(String value){
 		double values = 0;
 		try{
 			values = Double.parseDouble(value);
 		}catch(IllegalArgumentException ex){
 			System.out.println(ex.getMessage());
 		}
-		return creatMoney(values);
+		return createMoney(values);
 	}
 	
 	/**

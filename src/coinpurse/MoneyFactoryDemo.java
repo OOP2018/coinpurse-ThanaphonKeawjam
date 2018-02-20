@@ -30,7 +30,7 @@ public class MoneyFactoryDemo {
 		for(String str : values){
 			System.out.println("creatMoney is " + str);
 			try{
-				Valuable value = f1.creatMoney(str);
+				Valuable value = f1.createMoney(str);
 				System.out.println(value.toString());
 			}catch(IllegalArgumentException ex){
 				System.out.println(ex.getMessage());
@@ -43,7 +43,7 @@ public class MoneyFactoryDemo {
 		for(String str : values2){
 			System.out.println("creatMoney is " + str);
 			try{
-				Valuable value = f3.creatMoney(str);
+				Valuable value = f3.createMoney(str);
 				System.out.println(value.toString());
 			}catch(IllegalArgumentException ex){
 				System.out.println(ex.getMessage());

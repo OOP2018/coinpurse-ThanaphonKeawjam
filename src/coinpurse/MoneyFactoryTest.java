@@ -12,25 +12,26 @@ import org.junit.Test;
 public class MoneyFactoryTest {
 	
 	private static final double TOL = 1.0E-6;
-	private MoneyFactory factory = MoneyFactory.getInstance();
 
 	@Test(timeout=1000)
 	public void testGetInstance(){
-		MoneyFactory tmf = ThaiMoneyFactory.getInstance();
-		MoneyFactory mmf = MalayMoneyFactory.getInstance();
-		MoneyFactory f1 = factory;
-		MoneyFactory f2 = factory;
-		assertEquals(true, f1 == f2);
-		assertEquals(true, f1 == tmf);
-		assertEquals(true, f1 == mmf);
-		assertEquals(true, tmf == mmf);
+		MoneyFactory mf1 = MoneyFactory.getInstance();
+		MoneyFactory mf2 = MoneyFactory.getInstance();
+		MoneyFactory.setFactory(new MalayMoneyFactory());
+		MoneyFactory mf3 = MoneyFactory.getInstance();
+		MoneyFactory mf4 = MoneyFactory.getInstance();
+		assertEquals(true, mf1 == mf2);
+		assertEquals(false, mf1 == mf3);
+		assertEquals(false, mf2 == mf3);
+		assertEquals(true, mf3 == mf4);
 	}
 	
 	@Test(timeout=1000)
 	public void testValueAndCurrency(){
-		Valuable m1 = factory.creatMoney("100.00");
-		Valuable m2 = factory.creatMoney(500.00);
-		Valuable m3 = factory.creatMoney(20.0);
+		MoneyFactory facetory = MoneyFactory.getInstance();
+		Valuable m1 = facetory.createMoney("100.00");
+		Valuable m2 = facetory.createMoney(500.00);
+		Valuable m3 = facetory.createMoney(20.0);
 		assertEquals(100.00, m1.getValue(), TOL);
 		assertEquals("Baht", m1.getCurrency());
 		assertEquals(500.00, m2.getValue(), TOL);
@@ -40,14 +41,12 @@ public class MoneyFactoryTest {
 		
 		MoneyFactory.setFactory(new MalayMoneyFactory());
 		MoneyFactory f = MoneyFactory.getInstance();
-		Valuable m4 = f.creatMoney("0.05");
-		Valuable m5 = f.creatMoney(1.0);
-		Valuable m6 = f.creatMoney(1000.0);
+		Valuable m4 = f.createMoney("0.05");
+		Valuable m5 = f.createMoney(1.0);
 		assertEquals(5, m4.getValue(), TOL);
 		assertEquals("Sen", m4.getCurrency());
 		assertEquals(1, m5.getValue(), TOL);
 		assertEquals("Ringgit", m5.getCurrency());
-		assertNull(m6);
 	}
 	
 	

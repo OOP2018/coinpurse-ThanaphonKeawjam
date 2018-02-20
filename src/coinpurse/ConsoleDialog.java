@@ -131,7 +131,7 @@ public class ConsoleDialog {
     private Valuable makeMoney(double value) {
     	Valuable values = null;
     	try{
-    		values = moneyFactory.creatMoney(value);
+    		values = moneyFactory.createMoney(value);
     	}catch(IllegalArgumentException ex){
     		System.out.println("Sorry, " + value + " is not a valid amount.");
     	}
