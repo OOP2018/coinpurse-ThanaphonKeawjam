@@ -23,6 +23,8 @@ public class Coin extends Money{
 	 */
 	@Override
 	public String toString() {
+		if(MoneyFactory.getInstance().getClass().getName().contains("Malay"))
+			return String.format("%.2f-%s", getValue() * 100, getCurrency());
 		return String.format("%.2f-%s", getValue(), getCurrency());
 	}
 

@@ -3,13 +3,17 @@ package coinpurse;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import coinpurse.strategy.GreedyWithdraw;
+import coinpurse.strategy.RecursiveWithdraw;
+import coinpurse.strategy.WithdrawStrategy;
+
 import java.util.Collections;
  
 /**
  *  A valuable purse contains money.
  *  You can insert money, withdraw money, check the balance,
  *  and check if the purse is full.
- *  
  *  @author Thanaphon Keawjam
  */
 public class Purse {
@@ -21,7 +25,11 @@ public class Purse {
      */
     private final int capacity;
     
+    private WithdrawStrategy strategy = null;
+    
     private Comparator<Valuable> comp;
+    
+    private MoneyFactory factory = MoneyFactory.getInstance();
     
     /** 
      *  Create a purse with a specified capacity.
@@ -31,6 +39,11 @@ public class Purse {
     	this.capacity = capacity;
     	money = new ArrayList<>();
     	comp = new ValueComparator();
+    	strategy = new GreedyWithdraw();
+    }
+    
+    public void setWithdrawStrategy(WithdrawStrategy strategy) {
+    	this.strategy = strategy;
     }
     
     /**
@@ -47,6 +60,9 @@ public class Purse {
     public double getBalance() {
     	double value = 0.0;
     	for(int i = 0; i < money.size(); i++){
+    		if(factory.getClass().getName().contains("Malay") && money.get(i).getValue() < 1)
+    		value +=  (money.get(i).getValue() / 100);
+    		
     		value +=  money.get(i).getValue();
     	}
 		return value; 
@@ -100,10 +116,13 @@ public class Purse {
 	 *    or null if cannot withdraw requested amount.
      */
     public Valuable[] withdraw( double amount ) {
-    	String currency;
+    	String currency = "";
     	MoneyFactory factory = MoneyFactory.getInstance();
     	if(factory.getClass().getName().contains("Thai")) currency = "Baht";
-    	else currency = "Ringgit";
+    	else if(factory.getClass().getName().contains("Malay")){
+    		if(amount < 1) currency = "Sen";
+    		else currency = "Ringgit";
+    	}
     	return withdraw(new Money(amount, currency));
 	}
     
@@ -114,28 +133,32 @@ public class Purse {
 	 *    	   or null if cannot withdraw requested amount.
      */
     public Valuable[] withdraw(Valuable amount){
-    	if(amount == null || amount.getValue() < 0) return null;
-    	
     	List<Valuable> list = new ArrayList<Valuable>();
+    	
+  //  	if(amount == null || amount.getValue() < 0) return null;
+    	
     	double amountNeededToWithdraw = amount.getValue();
   
-    	Collections.sort(money, comp);
-    	Collections.reverse(money);
+    //	Collections.sort(money, comp);
+    //	Collections.reverse(money);
     	
     	if(amountNeededToWithdraw < 0 || this.getBalance() < amountNeededToWithdraw || count() == 0) return null;
     	
-    	for(Valuable value : money){	
-    		if(value.getCurrency().equalsIgnoreCase(amount.getCurrency())){	
-    			if(amountNeededToWithdraw >= value.getValue()){
-    				amountNeededToWithdraw -= value.getValue();
-    				list.add(value);
-    			}
-    		}
-    		
-    		if(amountNeededToWithdraw == 0) break;
-    	}
+    	if(strategy.withdraw(amount, money) == null) return null;
+    	list.addAll(strategy.withdraw(amount, money));
     	
-    	if(amountNeededToWithdraw != 0) return null;
+    //	for(Valuable value : money){	
+    //		if(value.getCurrency().equalsIgnoreCase(amount.getCurrency())){	
+    //			if(amountNeededToWithdraw >= value.getValue()){
+    //				amountNeededToWithdraw -= value.getValue();
+    //				list.add(value);
+    //			}
+    //		}
+    		
+    //		if(amountNeededToWithdraw == 0) break;
+    //	}
+    	
+    //	if(amountNeededToWithdraw != 0) return null;
     	
     	for(Valuable removeValue : list) money.remove(removeValue);
     	

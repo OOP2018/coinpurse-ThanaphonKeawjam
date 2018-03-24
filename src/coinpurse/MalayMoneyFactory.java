@@ -19,7 +19,7 @@ public class MalayMoneyFactory extends MoneyFactory{
 	public Valuable createMoney(double value) {
 		if(value < 1){
 			if(value == 0.05 || value == 0.1 || value == 0.2 || value == 0.5){
-				return new Coin(value * 100, "Sen");
+				return new Coin(value, "Sen");
 			}else{
 				throw new IllegalArgumentException("Malaysia doesn't have " + value * 100 + " Sen");
 			}
