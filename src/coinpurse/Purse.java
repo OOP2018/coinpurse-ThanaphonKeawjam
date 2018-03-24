@@ -39,11 +39,8 @@ public class Purse {
     	this.capacity = capacity;
     	money = new ArrayList<>();
     	comp = new ValueComparator();
-    	strategy = new GreedyWithdraw();
-    }
-    
-    public void setWithdrawStrategy(WithdrawStrategy strategy) {
-    	this.strategy = strategy;
+    //	strategy = new GreedyWithdraw();
+    	strategy = new RecursiveWithdraw();
     }
     
     /**
@@ -139,8 +136,8 @@ public class Purse {
     	
     	double amountNeededToWithdraw = amount.getValue();
   
-    //	Collections.sort(money, comp);
-    //	Collections.reverse(money);
+//    	Collections.sort(money, comp);
+//    	Collections.reverse(money);
     	
     	if(amountNeededToWithdraw < 0 || this.getBalance() < amountNeededToWithdraw || count() == 0) return null;
     	

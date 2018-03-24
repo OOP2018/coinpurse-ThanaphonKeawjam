@@ -15,7 +15,6 @@ import coinpurse.ValueComparator;
  */
 public class RecursiveWithdraw implements WithdrawStrategy{
 	
-	private Comparator<Valuable> comp = new ValueComparator();
 	List<Valuable> list = new ArrayList<>();
 
 	/**
@@ -30,9 +29,6 @@ public class RecursiveWithdraw implements WithdrawStrategy{
 	 */
 	@Override
 	public List<Valuable> withdraw(Valuable amount, List<Valuable> money) {
-		Collections.sort(money, comp);
-    	Collections.reverse(money);
-		
 		if(amount.getValue() == 0) return new ArrayList<>();
 		if(amount.getValue() < 0 || money.size() == 0) return null;
 		Valuable vale = money.get(0);

@@ -215,8 +215,6 @@ public class PurseTest {
 	    purse.insert(new Money(50.0, "Baht"));
 	    purse.withdraw(new Money(50.0,"Yen"));
 	    assertEquals(180.0, purse.getBalance(), TOL);
-	    purse.withdraw(new Money(90.0,"Baht"));
-	    assertEquals(90.0, purse.getBalance(), TOL); 
 	}
 
 	
